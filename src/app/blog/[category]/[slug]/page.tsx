@@ -7,30 +7,34 @@ import { baseUrl } from "@/app/sitemap";
 import { BreadcrumbWithCustomSeparator } from "@/components/BreadCrumb";
 import Container from "@/components/container";
 
-export async function generateStaticParams() {
-  let posts = getBlogPosts();
+// ✅ Define a proper type for route params
+type BlogPageParams = {
+  params: {
+    category: string;
+    slug: string;
+  };
+};
 
-  return posts.map((post) => ({   
-    category: post.metadata.category, 
-    slug: post.slug,}));  
+// ✅ fine for static params
+export function generateStaticParams() {
+  const posts = getBlogPosts();
+
+  return posts.map((post) => ({
+    category: post.metadata.category,
+    slug: post.slug,
+  }));
 }
 
-export async function generateMetadata({params}: {  params: {slug: string; category: string }}) {
-  let post = getBlogPosts().find((post) => post.slug === params.slug);
-  if (!post) {
-    return;
-  }
+// ✅ Metadata should be async (Next.js 15 convention)
+export async function generateMetadata({ params }: BlogPageParams) {
+  const post = getBlogPosts().find((post) => post.slug === params.slug);
+  if (!post) return;
 
-  let {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
-  } = post.metadata;
+  const { title, publishedAt: publishedTime, summary: description, image } =
+    post.metadata;
 
-  let ogImage = image
-    ? image
-    : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
+  const ogImage =
+    image || `${baseUrl}/og?title=${encodeURIComponent(title)}`;
 
   return {
     title,
@@ -40,7 +44,7 @@ export async function generateMetadata({params}: {  params: {slug: string; categ
       description,
       type: "article",
       publishedTime,
-      url: `${baseUrl}/blog/${post?.metadata.category}/${post?.slug}}`,
+      url: `${baseUrl}/blog/${post.metadata.category}/${post.slug}`,
       images: [{ url: ogImage }],
     },
     twitter: {
@@ -52,14 +56,10 @@ export async function generateMetadata({params}: {  params: {slug: string; categ
   };
 }
 
-export default async function Page({
-  params,}: {  params: { category: string; slug: string };
-}) {
-  let post = getBlogPosts().find((post) => post.slug === params.slug);
-
-  if (!post) {
-    notFound();
-  }
+// ✅ Explicitly type the Page function and make it async
+export default async function Page({ params }: BlogPageParams) {
+  const post = getBlogPosts().find((p) => p.slug === params.slug);
+  if (!post) notFound();
 
   return (
     <>
@@ -91,7 +91,7 @@ export default async function Page({
         title={post.metadata.title}
         slug={post.slug}
       />
-      
+
       <Header>
         <Container>
           <BreadcrumbWithCustomSeparator
@@ -108,6 +108,7 @@ export default async function Page({
           </div>
         </Container>
       </Header>
+
       <Container>
         <article className="prose">
           <CustomMDX source={post.content} />
