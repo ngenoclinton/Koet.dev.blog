@@ -10,9 +10,9 @@ import Container from "@/components/container";
 export async function generateStaticParams() {
   let posts = getBlogPosts();
 
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  return posts.map((post) => ({   
+    category: post.metadata.category, 
+    slug: post.slug,}));  
 }
 
 export function generateMetadata({
