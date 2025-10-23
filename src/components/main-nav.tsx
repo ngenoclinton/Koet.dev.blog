@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react"
+import * as React from "react";
+import Link from "next/link";
+import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,21 +13,20 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
-import { cn } from "@/lib/utils"
-import { POSTS } from "@/lib/constants"
-import { Icons } from "./ui/icons/icons"
-import { ModeToggle } from "./ui/mode-toggle"
+} from "@/components/ui/navigation-menu";
+import { cn } from "@/lib/utils";
+import { POSTS } from "@/lib/constants";
+import { Icons } from "./ui/icons/icons";
+import { ModeToggle } from "./ui/mode-toggle";
 
-
-
-export function MainNav({className}: {className?:string}) {
-  const isMobile = useIsMobile()
+export function MainNav({ className }: { className?: string }) {
+  const isMobile = useIsMobile();
 
   return (
     <div
       className={cn(
-        "max-w-screen-xl mx-auto w-full flex flex-col items-start justify-start md:flex-row md:items-center md:justify-between pt-10 z-50 px-2.5 md:px-20 ", className
+        "max-w-screen-xl mx-auto w-full flex flex-col items-start justify-start md:flex-row md:items-center md:justify-between pt-10 z-50 px-2.5 md:px-20 ",
+        className
       )}
     >
       <Link href={"/"}>
@@ -39,7 +38,9 @@ export function MainNav({className}: {className?:string}) {
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="text-base">Posts</NavigationMenuTrigger>
+            <NavigationMenuTrigger className="text-base">
+              Posts
+            </NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                 {POSTS.map((post) => (
@@ -55,10 +56,11 @@ export function MainNav({className}: {className?:string}) {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="/about" legacyBehavior passHref>
-              <NavigationMenuLink className={`${navigationMenuTriggerStyle()} text-base`}>
-                About
-              </NavigationMenuLink>
+            <Link
+              href="/about"
+              className={`${navigationMenuTriggerStyle()} text-base`}
+            >
+              About
             </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
@@ -70,7 +72,7 @@ export function MainNav({className}: {className?:string}) {
         </Link>
       </div>
     </div>
-  )
+  );
 }
 
 function ListItem({
@@ -90,5 +92,5 @@ function ListItem({
         </Link>
       </NavigationMenuLink>
     </li>
-  )
+  );
 }

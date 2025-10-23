@@ -23,6 +23,7 @@ export function generateMetadata({ params }: { params: { category: string } }) {
 }
 
 export default function Page({ params }: { params: { category: string } }) {
+
   let posts = getBlogPosts().filter(
     (post) => post.metadata.category === params.category
   );
@@ -31,12 +32,10 @@ export default function Page({ params }: { params: { category: string } }) {
 let postMtDt = getBlogPosts().filter(
     (post) => post.metadata
   );
-  console.log(postMtDt); 
 
 let postSlug = getBlogPosts().filter(
     (post) => post.slug
   );
-  console.log(postSlug);
 //------------------------------------
 
   if (!posts.length) {
