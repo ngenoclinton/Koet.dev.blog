@@ -1,0 +1,28 @@
+---
+title: "Building a Modern Full-Stack Next.js App: Lessons from a Plant Marketplace"
+publishedAt: "2025-10-15"
+summary: "A deep dive into building a full-stack marketplace using Next.js, Prisma, and UploadThing — from debugging TypeScript errors to mastering image uploads and toast notifications."
+category: "web-development"
+---
+    
+In the journey of modern web development, few things teach you faster than building a real-world full-stack application. Over the past few weeks, I’ve been developing a **digital plant marketplace** — a Next.js application where users can explore, upload, and purchase plant products.  
+
+Along the way, I’ve touched nearly every    layer of the modern web stack: frontend components, backend APIs, database modeling, file uploads, and developer experience improvements. This article breaks down what I’ve learned — the wins, the bugs, and the aha moments.
+
+## Building with Next.js and Prisma
+
+At the heart of the project is **Next.js**, providing the structure for both the client interface and the backend API routes.  
+For data persistence, I used **Prisma ORM** connected to a **PostgreSQL** database hosted on **Neon**.  
+
+Each plant object follows a simple but powerful structure:
+
+```ts
+const object = {
+  name: string;
+  description: string;
+  downloadUrl: string;
+  price: number;
+  category: string;
+  userId: string;
+  imageUrl: string;
+}
