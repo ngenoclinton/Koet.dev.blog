@@ -6,15 +6,20 @@ import Header from "@/components/Header";
 import CardCategory from "@/components/CardCategory";
 import NotFound from "@/components/NotFound";
 
+// ✅ Correct static params
 export function generateStaticParams() {
   const posts = getBlogPosts();
-  return posts.map((post) => ({
-    category: post.metadata.category,
-  }));
+  const categories = Array.from(new Set(posts.map((post) => post.metadata.category)));
+  return categories.map((category) => ({ category }));
 }
 
-export function generateMetadata({ params }: { params: { category: string } }) {
-  const { category } = params;
+// ✅ Metadata function now async (and awaits params)
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) {
+  const { category } = await params;
 
   return {
     title: category.toUpperCase(),
@@ -22,13 +27,13 @@ export function generateMetadata({ params }: { params: { category: string } }) {
   };
 }
 
+// ✅ Page function awaits params (Next.js 15 convention)
 export default async function Page({
   params,
 }: {
   params: Promise<{ category: string }>;
 }) {
   const { category } = await params;
-
   const posts = getBlogPosts().filter(
     (post) => post.metadata.category === category
   );

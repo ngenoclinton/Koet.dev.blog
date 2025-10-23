@@ -7,15 +7,15 @@ import { baseUrl } from "@/app/sitemap";
 import { BreadcrumbWithCustomSeparator } from "@/components/BreadCrumb";
 import Container from "@/components/container";
 
-// ✅ Define a proper type for route params
+// ✅ Correct type for the new Next.js convention
 type BlogPageParams = {
-  params: {
+  params: Promise<{
     category: string;
     slug: string;
-  };
+  }>;
 };
 
-// ✅ fine for static params
+// ✅ Fine for static params
 export function generateStaticParams() {
   const posts = getBlogPosts();
 
@@ -25,9 +25,10 @@ export function generateStaticParams() {
   }));
 }
 
-// ✅ Metadata should be async (Next.js 15 convention)
+// ✅ Metadata must await params (Next.js 15+)
 export async function generateMetadata({ params }: BlogPageParams) {
-  const post = getBlogPosts().find((post) => post.slug === params.slug);
+  const { slug } = await params;
+  const post = getBlogPosts().find((post) => post.slug === slug);
   if (!post) return;
 
   const { title, publishedAt: publishedTime, summary: description, image } =
@@ -56,9 +57,10 @@ export async function generateMetadata({ params }: BlogPageParams) {
   };
 }
 
-// ✅ Explicitly type the Page function and make it async
+// ✅ Page component now awaits params
 export default async function Page({ params }: BlogPageParams) {
-  const post = getBlogPosts().find((p) => p.slug === params.slug);
+  const { category, slug } = await params;
+  const post = getBlogPosts().find((p) => p.slug === slug);
   if (!post) notFound();
 
   return (
