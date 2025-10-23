@@ -1,3 +1,13 @@
+
+import React from 'react'
+
+const page = () => {
+  return (
+    <div>page</div>
+  )
+}
+
+export default page
 // import { notFound } from "next/navigation";
 // import { formatDate, getBlogPosts } from "../../utils";
 // import Header from "@/components/Header";
